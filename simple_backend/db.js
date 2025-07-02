@@ -1,18 +1,18 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-    host: 'localhost', // Ganti dengan host dari database online (contoh: db4free.net)
-    user: 'your_username',
-    password: 'your_password',
-    database: 'your_database'
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST,       // contoh: db4free.net
+    user: process.env.DB_USER,       // contoh: riyanto123
+    password: process.env.DB_PASSWORD, // contoh: 12345678
+    database: process.env.DB_NAME     // contoh: simple_db
 });
 
-db.connect((err) => {
+connection.connect((err) => {
     if (err) {
-        console.error('Koneksi ke database gagal:', err.message);
+        console.error('❌ Gagal konek ke database:', err.message);
     } else {
-        console.log('Terhubung ke database');
+        console.log('✅ Berhasil konek ke database MySQL');
     }
 });
 
-module.exports = db;
+module.exports = connection;

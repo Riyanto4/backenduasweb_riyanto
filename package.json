@@ -1,14 +1,9 @@
 {
   "name": "portopolio_be",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node simple_backend/index.js"
   },
-  "keywords": [],
-  "author": "Riyanto",
-  "license": "ISC",
-  "description": "Backend Express untuk portofolio",
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",

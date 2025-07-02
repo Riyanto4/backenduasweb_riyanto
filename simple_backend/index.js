@@ -1,9 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const db = require('./db');
+const db = require('./db'); // Pastikan db.js berisi konfigurasi MySQL yang benar
+
 const app = express();
-const PORT = 4000;
+
+// GUNAKAN PORT DARI ENV (untuk Render) ATAU fallback ke 4000 secara lokal
+const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -31,17 +34,14 @@ app.post('/users', (req, res) => {
     const sql = 'INSERT INTO users (name, email, tanggal_lahir, nomor_hp) VALUES (?, ?, ?, ?)';
     db.query(sql, [name, email, tanggal_lahir, nomor_hp], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
-
         res.status(201).json({ id: result.insertId, name, email, tanggal_lahir, nomor_hp });
     });
 });
 
-//Route: edit sesuai id
+// Route: update user berdasarkan ID
 app.put('/users/:id', (req, res) => {
     const { name, email, tanggal_lahir, nomor_hp } = req.body;
     const { id } = req.params;
-
-    //console.log('Edit data ID:', id, 'Body:', req.body);
 
     const sql = 'UPDATE users SET name = ?, email = ?, tanggal_lahir = ?, nomor_hp = ? WHERE id = ?';
     db.query(sql, [name, email, tanggal_lahir, nomor_hp, id], (err, result) => {
@@ -50,7 +50,7 @@ app.put('/users/:id', (req, res) => {
     });
 });
 
-//Route: hapus data
+// Route: hapus user
 app.delete('/users/:id', (req, res) => {
     const { id } = req.params;
     db.query('DELETE FROM users WHERE id = ?', [id], (err, result) => {
@@ -59,6 +59,7 @@ app.delete('/users/:id', (req, res) => {
     });
 });
 
+// Mulai server
 app.listen(PORT, () => {
     console.log(`Server berjalan di http://localhost:${PORT}`);
 });
